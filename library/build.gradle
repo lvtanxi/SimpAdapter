@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+group='com.github.lvtanxi'
+
 android {
     compileSdkVersion rootProject.BUILD_SDK_VERSION
 	buildToolsVersion rootProject.BUILD_TOOLS_VERSION
