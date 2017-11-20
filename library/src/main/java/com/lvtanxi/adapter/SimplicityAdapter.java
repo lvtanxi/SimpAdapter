@@ -17,14 +17,12 @@ import java.util.Map;
 
 public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
-    private List<Type> dataTypes = new ArrayList<>();
+    private List<Type> mDataTypes = new ArrayList<>();
 
-    private Map<Type, IViewHolderCreator> creators = new ArrayMap<>();
-
-    private IViewHolderCreator defaultCreator = null;
-    private OnItemClickListener mOnItemClickListener = null;
-
+    private Map<Type, IViewHolderCreator> mCreators = new ArrayMap<>();
+    private OnItemClickListener mItemClickListener = null;
     private List<Object> mDatas;
+    private boolean mAddItemViewClick;
 
     protected SimplicityAdapter() {
         mDatas = new ArrayList<>();
@@ -66,6 +64,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         return mDatas;
     }
 
+
     @Override
     public Object getItem(int position) {
         return mDatas.get(position);
@@ -78,23 +77,22 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     @Override
     public SimplicityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Type dataType = dataTypes.get(viewType);
-        IViewHolderCreator creator = creators.get(dataType);
-        if (creator == null) {
-            for (Type t : creators.keySet()) {
+        Type dataType = mDataTypes.get(viewType);
+        IViewHolderCreator creator = mCreators.get(dataType);
+        if (creator == null) {//一般不会走这个方法
+            for (Type t : mCreators.keySet()) {
                 if (isTypeMatch(t, dataType)) {
-                    creator = creators.get(t);
+                    creator = mCreators.get(t);
                     break;
                 }
             }
         }
-        if (creator == null) {
-            if (defaultCreator == null) {
-                throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
-            }
-            creator = defaultCreator;
-        }
-        return creator.create(parent);
+        if (creator == null)
+            throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
+        SimplicityViewHolder simplicityViewHolder = creator.create(parent);
+        if (simplicityViewHolder != null)
+            simplicityViewHolder.addOnItemClickListener(mItemClickListener, mAddItemViewClick);
+        return simplicityViewHolder;
     }
 
     private boolean isTypeMatch(Type type, Type targetType) {
@@ -124,23 +122,13 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
 
-    public <T> SimplicityAdapter registerDefault(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
-        defaultCreator = SimplicityViewHolder(layoutRes, simplicityConvert);
-        return this;
-    }
 
-    public <T> SimplicityAdapter registerDefaultOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-        return this;
-    }
-
-
-    public <T> SimplicityAdapter register(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
+    public <T> SimplicityAdapter register( int layoutRes,  SimplicityConvert<T> simplicityConvert) {
         Type type = getConvertActualTypeArguments(simplicityConvert);
         if (type == null) {
             throw new IllegalArgumentException();
         }
-        creators.put(type, SimplicityViewHolder(layoutRes, simplicityConvert));
+        mCreators.put(type, SimplicityViewHolder(layoutRes, simplicityConvert));
         return this;
     }
 
@@ -186,11 +174,11 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     @Override
     public int getItemViewType(int position) {
         Object item = mDatas.get(position);
-        int index = dataTypes.indexOf(item.getClass());
+        int index = mDataTypes.indexOf(item.getClass());
         if (index == -1) {
-            dataTypes.add(item.getClass());
+            mDataTypes.add(item.getClass());
         }
-        index = dataTypes.indexOf(item.getClass());
+        index = mDataTypes.indexOf(item.getClass());
         return index;
     }
 
@@ -200,6 +188,17 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
             mDatas.clear();
             notifyDataSetChanged();
         }
+    }
+
+
+    public SimplicityAdapter registerItemClickListener(OnItemClickListener itemClickListener) {
+        return registerItemClickListener(itemClickListener, true);
+    }
+
+    public SimplicityAdapter registerItemClickListener(OnItemClickListener itemClickListener, boolean itemViewClick) {
+        mItemClickListener = itemClickListener;
+        mAddItemViewClick = itemViewClick;
+        return this;
     }
 
 }

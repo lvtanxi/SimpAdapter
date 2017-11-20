@@ -3,6 +3,7 @@ package com.lvtanxi.adapter.convert;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lvtanxi.adapter.SimplicityViewHolder;
+import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
 
 public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
@@ -246,4 +248,26 @@ public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
         viewGroup.removeView(view);
         return this;
     }
+
+    /**
+     * 为id为viewId的item子控件设置点击事件监听器
+     *
+     */
+    @Override
+    public DefaultViewConvert setOnItemChildClickListener(@IdRes int viewId) {
+        View view = findViewById(viewId);
+        if (view != null) {
+            view.setOnClickListener(new OnNoDoubleClickListener() {
+                @Override
+                public void onNoDoubleClick(View v) {
+                    if (viewHolder.getOnItemClickListener() != null) {
+                        viewHolder.getOnItemClickListener().onItemChildClick(v,viewHolder.getAdapterPosition(),false);
+                    }
+                }
+            });
+        }
+        return this;
+    }
+
+
 }

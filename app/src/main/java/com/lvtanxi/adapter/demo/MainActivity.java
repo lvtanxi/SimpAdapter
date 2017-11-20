@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lvtanxi.adapter.SimplicityAdapter;
 import com.lvtanxi.adapter.SimplicityConvert;
 import com.lvtanxi.adapter.convert.IViewConvert;
+import com.lvtanxi.adapter.decoration.SectionDecoration;
+import com.lvtanxi.adapter.listener.OnItemClickListener;
 import com.lvtanxi.adapter.manager.CustomLayoutManager;
 
 import java.util.ArrayList;
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             }});
         recyclerView.setLayoutManager(customLayoutManager);
-
+        recyclerView.addItemDecoration(new SectionDecoration(0));
         mSimplicityAdapter = SimplicityAdapter.create()
                 .register(R.layout.item_user, new SimplicityConvert<User>() {
                     @Override
@@ -106,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void convert(IViewConvert convert, Body body, int position) {
                         Log.d("MainActivity", "item_body");
-                        convert.setText(R.id.iem_body, body.getName());
+                        convert.setText(R.id.iem_body, body.getName())
+                        .setOnItemChildClickListener(R.id.iem_body);
                     }
                 })
                 .register(R.layout.item_image, new SimplicityConvert<Image>() {
@@ -127,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("MainActivity", "item_music");
                         convert.setText(R.id.name, music.getName())
                                 .setImage(R.id.cover, music.getCoverRes());
+                    }
+                })
+                .registerItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemChildClick(View view, int position,boolean isItemView) {
+                        Toast.makeText(MainActivity.this, isItemView+"position:" + position, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .attachTo(recyclerView);

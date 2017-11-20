@@ -10,10 +10,6 @@ import android.widget.Adapter;
 
 public interface IViewConvert<VI extends IViewConvert> {
 
-    interface Action<V extends View> {
-        void action(V v);
-    }
-
     <T extends View> T findViewById(int viewId);
 
     VI setTag(int viewId, Object object);
@@ -54,6 +50,8 @@ public interface IViewConvert<VI extends IViewConvert> {
 
     VI setOnLongClickListener(int viewId, View.OnLongClickListener listener);
 
+    VI setOnItemChildClickListener(int viewId);
+
     VI setEnabled(int viewId, boolean enable);
 
     VI enable(int viewId);
@@ -80,4 +78,8 @@ public interface IViewConvert<VI extends IViewConvert> {
     VI removeAllViews(int viewId);
 
     VI removeView(int viewId, View view);
+
+    interface Action<V extends View> {
+        void action(V v);
+    }
 }

@@ -7,12 +7,10 @@ import android.view.View;
  * Time: 13:34
  * Description: ItemView的点击事件
  */
-public interface OnItemClickListener<T> {
-    /**
-     * 回调
-     * @param view 点击的View
-     * @param position itemView的位置
-     * @param t adapter的泛型实体
+public interface OnItemClickListener {
+  /* 回调
+     * @param view 点击View
+     * @param position 点击下标
      */
-    void onItemClick(View view, int position, T t);
+    void onItemChildClick(View view, int position,boolean isItemView);
 }
