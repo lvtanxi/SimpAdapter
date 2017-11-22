@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.lvtanxi.adapter.convert.IViewConvert;
 import com.lvtanxi.adapter.listener.IViewHolderCreator;
+import com.lvtanxi.adapter.listener.OnItemChildClickListener;
 import com.lvtanxi.adapter.listener.OnItemClickListener;
 
 import java.lang.reflect.ParameterizedType;
@@ -20,11 +21,16 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     private List<Type> mDataTypes = new ArrayList<>();
 
     private Map<Type, IViewHolderCreator> mCreators = new ArrayMap<>();
-    private OnItemClickListener mItemClickListener = null;
-    private List<Object> mDatas;
-    private boolean mAddItemViewClick;
+    private IViewHolderCreator mDefaultCreator = null;
 
-    protected SimplicityAdapter() {
+    private Map<Type, OnItemClickListener> mItemClickListeners = new ArrayMap<>();
+    private OnItemClickListener mDefaultItemClickListener = null;
+
+    private OnItemChildClickListener mOnItemClickListener = null;
+
+    private List<Object> mDatas;
+
+    private SimplicityAdapter() {
         mDatas = new ArrayList<>();
     }
 
@@ -35,9 +41,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     public static <T extends SimplicityAdapter> T create(Class<T> clazz) {
         try {
             return clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -79,61 +83,56 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     public SimplicityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Type dataType = mDataTypes.get(viewType);
         IViewHolderCreator creator = mCreators.get(dataType);
-        if (creator == null) {//一般不会走这个方法
-            for (Type t : mCreators.keySet()) {
-                if (isTypeMatch(t, dataType)) {
-                    creator = mCreators.get(t);
-                    break;
-                }
-            }
+        if (creator == null) {
+            if (mDefaultCreator == null)
+                throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
+            creator = mDefaultCreator;
+            mCreators.put(dataType, mDefaultCreator);
         }
-        if (creator == null)
-            throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
+
         SimplicityViewHolder simplicityViewHolder = creator.create(parent);
-        if (simplicityViewHolder != null)
-            simplicityViewHolder.addOnItemClickListener(mItemClickListener, mAddItemViewClick);
+        if (simplicityViewHolder != null) {
+            simplicityViewHolder.bindOnItemClickListener(mDefaultItemClickListener, mItemClickListeners.get(dataType));
+            simplicityViewHolder.setOnItemChildClickListener(mOnItemClickListener);
+        }
         return simplicityViewHolder;
     }
 
-    private boolean isTypeMatch(Type type, Type targetType) {
-        if (type instanceof Class && targetType instanceof Class) {
-            if (((Class) type).isAssignableFrom((Class) targetType)) {
-                return true;
-            }
-        } else if (type instanceof ParameterizedType && targetType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) type;
-            ParameterizedType parameterizedTargetType = (ParameterizedType) targetType;
-            if (isTypeMatch(parameterizedType.getRawType(), ((ParameterizedType) targetType).getRawType())) {
-                Type[] types = parameterizedType.getActualTypeArguments();
-                Type[] targetTypes = parameterizedTargetType.getActualTypeArguments();
-                if (types == null || targetTypes == null || types.length != targetTypes.length) {
-                    return false;
-                }
-                int len = types.length;
-                for (int i = 0; i < len; i++) {
-                    if (!isTypeMatch(types[i], targetTypes[i])) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
 
-
-
-    public <T> SimplicityAdapter register( int layoutRes,  SimplicityConvert<T> simplicityConvert) {
+    public <T> SimplicityAdapter register(int layoutRes, SimplicityConvert<T> simplicityConvert) {
         Type type = getConvertActualTypeArguments(simplicityConvert);
         if (type == null) {
             throw new IllegalArgumentException();
         }
-        mCreators.put(type, SimplicityViewHolder(layoutRes, simplicityConvert));
+        mCreators.put(type, createSimplicityViewHolder(layoutRes, simplicityConvert));
+        return this;
+    }
+
+    public <T> SimplicityAdapter registerDefault(int layoutRes, SimplicityConvert<T> simplicityConvert) {
+        mDefaultCreator = createSimplicityViewHolder(layoutRes, simplicityConvert);
+        return this;
+    }
+
+    public <T> SimplicityAdapter registerOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
+        Type type = getConvertActualTypeArguments(onItemClickListener);
+        if (type == null)
+            throw new IllegalArgumentException();
+        mItemClickListeners.put(type, onItemClickListener);
+        return this;
+    }
+
+    public <T> SimplicityAdapter registerDefaultOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
+        mDefaultItemClickListener= onItemClickListener;
+        return this;
+    }
+
+    public SimplicityAdapter registerOnItemChildClickListener(OnItemChildClickListener itemChildClickListener) {
+        this.mOnItemClickListener = itemChildClickListener;
         return this;
     }
 
 
-    private <T> IViewHolderCreator<T> SimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
+    private <T> IViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
         return new IViewHolderCreator<T>() {
             @Override
             public SimplicityViewHolder<T> create(ViewGroup parent) {
@@ -147,11 +146,12 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         };
     }
 
-    private <T> Type getConvertActualTypeArguments(SimplicityConvert<T> convert) {
+    private Type getConvertActualTypeArguments(Object convert) {
         Type[] interfaces = convert.getClass().getGenericInterfaces();
         for (Type type : interfaces) {
             if (type instanceof ParameterizedType) {
-                if (((ParameterizedType) type).getRawType().equals(SimplicityConvert.class)) {
+                Type rawType = ((ParameterizedType) type).getRawType();
+                if (rawType.equals(SimplicityConvert.class) || rawType.equals(OnItemClickListener.class)) {
                     Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
                     if (actualType instanceof Class) {
                         return actualType;
@@ -190,15 +190,5 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         }
     }
 
-
-    public SimplicityAdapter registerItemClickListener(OnItemClickListener itemClickListener) {
-        return registerItemClickListener(itemClickListener, true);
-    }
-
-    public SimplicityAdapter registerItemClickListener(OnItemClickListener itemClickListener, boolean itemViewClick) {
-        mItemClickListener = itemClickListener;
-        mAddItemViewClick = itemViewClick;
-        return this;
-    }
 
 }

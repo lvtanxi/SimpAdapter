@@ -8,21 +8,20 @@ import android.view.ViewGroup;
 
 import com.lvtanxi.adapter.convert.DefaultViewConvert;
 import com.lvtanxi.adapter.convert.IViewConvert;
+import com.lvtanxi.adapter.listener.OnItemChildClickListener;
 import com.lvtanxi.adapter.listener.OnItemClickListener;
 import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
 
 public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
 
-    private SparseArray<View> viewMap;
+    private SparseArray<View> mViewSparseArray;
 
-    private IViewConvert injector;
+    private IViewConvert mIViewConvert;
 
-    protected int mPosition;
+    private D mData;
 
-    private OnItemClickListener mOnItemClickListener ;
-
-
+    private OnItemChildClickListener mOnItemChildClickListener;
 
 
     public SimplicityViewHolder(ViewGroup parent, int itemLayoutRes) {
@@ -31,24 +30,26 @@ public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
 
     public SimplicityViewHolder(View itemView) {
         super(itemView);
-        viewMap = new SparseArray<>();
+        mViewSparseArray = new SparseArray<>();
     }
 
     final void convert(D d, int position) {
-        if (injector == null)
-            injector = new DefaultViewConvert(this);
-        mPosition=position;
-        convert(injector,d,position);
+        if (mIViewConvert == null)
+            mIViewConvert = new DefaultViewConvert(this);
+        mData = d;
+        convert(mIViewConvert, d, position);
     }
 
-    public void addOnItemClickListener(OnItemClickListener itemClickListener,boolean addItemViewClick) {
-        mOnItemClickListener=itemClickListener;
-        if (itemClickListener != null&&addItemViewClick) {
+    public void bindOnItemClickListener(final OnItemClickListener<D> defaultItemClickListener, final OnItemClickListener<D> onItemClickListener) {
+        if (onItemClickListener != null || defaultItemClickListener != null) {
             itemView.setOnClickListener(new OnNoDoubleClickListener() {
                 @Override
                 public void onNoDoubleClick(View v) {
                     if (v.getId() == SimplicityViewHolder.this.itemView.getId()) {
-                        mOnItemClickListener.onItemChildClick(v,mPosition,true);
+                        if (onItemClickListener != null)
+                            onItemClickListener.onItemClick(v, mData, getAdapterPosition());
+                        else
+                            defaultItemClickListener.onItemClick(v, mData, getAdapterPosition());
                     }
                 }
             });
@@ -59,20 +60,21 @@ public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
     protected abstract void convert(IViewConvert convert, D d, int position);
 
 
-
     public final <T extends View> T id(int id) {
-        View view = viewMap.get(id);
+        View view = mViewSparseArray.get(id);
         if (view == null) {
             view = itemView.findViewById(id);
-            viewMap.put(id, view);
+            mViewSparseArray.put(id, view);
         }
         return (T) view;
     }
 
-    public int getClickPosition(){
-        return mPosition;
+    public void setOnItemChildClickListener(OnItemChildClickListener onItemChildClickListener) {
+        mOnItemChildClickListener = onItemChildClickListener;
     }
-    public OnItemClickListener getOnItemClickListener() {
-        return mOnItemClickListener;
+
+    public void invokeOnItemChildClickListener(View v) {
+        if (mOnItemChildClickListener != null)
+            mOnItemChildClickListener.onItemChildClick(v, getAdapterPosition());
     }
 }

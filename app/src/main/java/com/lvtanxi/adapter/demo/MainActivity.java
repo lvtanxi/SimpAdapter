@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(customLayoutManager);
         recyclerView.addItemDecoration(new SectionDecoration(0));
         mSimplicityAdapter = SimplicityAdapter.create()
-                .register(R.layout.item_user, new SimplicityConvert<User>() {
+                .registerDefault(R.layout.item_user, new SimplicityConvert<User>() {
                     @Override
                     public void convert(IViewConvert convert, User user, int position) {
                         Log.d("MainActivity", "item_user");
@@ -134,10 +134,10 @@ public class MainActivity extends AppCompatActivity {
                                 .setImage(R.id.cover, music.getCoverRes());
                     }
                 })
-                .registerItemClickListener(new OnItemClickListener() {
+                .registerOnItemClickListener(new OnItemClickListener<Music>() {
                     @Override
-                    public void onItemChildClick(View view, int position,boolean isItemView) {
-                        Toast.makeText(MainActivity.this, isItemView+"position:" + position, Toast.LENGTH_SHORT).show();
+                    public void onItemClick(View view, Music music, int position) {
+                        Toast.makeText(MainActivity.this, music.getName(), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .attachTo(recyclerView);

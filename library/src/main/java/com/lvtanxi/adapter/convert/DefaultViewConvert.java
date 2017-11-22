@@ -260,9 +260,7 @@ public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
             view.setOnClickListener(new OnNoDoubleClickListener() {
                 @Override
                 public void onNoDoubleClick(View v) {
-                    if (viewHolder.getOnItemClickListener() != null) {
-                        viewHolder.getOnItemClickListener().onItemChildClick(v,viewHolder.getAdapterPosition(),false);
-                    }
+                    viewHolder.invokeOnItemChildClickListener(v);
                 }
             });
         }
