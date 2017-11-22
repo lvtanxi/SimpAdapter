@@ -44,7 +44,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
 
-    public void addItems(List<Object> data, boolean isRefresh) {//刷新
+    public void addItems(List<?> data, boolean isRefresh) {//刷新
         if (isRefresh) {
             mDatas.clear();
             notifyDataSetChanged();
@@ -53,7 +53,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
 
-    public void addItems(List<Object> items) {
+    public void addItems(List<?> items) {
         if (items != null && !items.isEmpty()) {
             if (mDatas.addAll(items))
                 notifyDataSetChanged();
