@@ -30,7 +30,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     private List<Object> mDatas;
 
-    private SimplicityAdapter() {
+    protected SimplicityAdapter() {
         mDatas = new ArrayList<>();
     }
 
