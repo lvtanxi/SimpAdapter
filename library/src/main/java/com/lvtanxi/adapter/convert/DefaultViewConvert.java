@@ -124,6 +124,12 @@ public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
         return this;
     }
 
+    @Override
+    public DefaultViewConvert visible(int viewId, boolean show) {
+        findViewById(viewId).setVisibility(show ? View.VISIBLE : View.GONE);
+        return this;
+    }
+
 
     @Override
     public DefaultViewConvert invisible(int viewId) {
@@ -251,7 +257,6 @@ public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
 
     /**
      * 为id为viewId的item子控件设置点击事件监听器
-     *
      */
     @Override
     public DefaultViewConvert setOnItemChildClickListener(@IdRes int viewId) {

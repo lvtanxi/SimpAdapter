@@ -38,6 +38,8 @@ public interface IViewConvert<VI extends IViewConvert> {
 
     VI visible(int viewId);
 
+    VI visible(int viewId,boolean show);
+
     VI invisible(int viewId);
 
     VI gone(int viewId);

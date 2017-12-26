@@ -190,5 +190,17 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         }
     }
 
+    public boolean isEmpty() {
+        return mDatas.size()==0;
+    }
+
+
+    public boolean isLast(int position) {
+        return (mDatas.size() - 1) == position;
+    }
+
+    public <T> T getItemModel(int position){
+        return (T) getItem(position);
+    }
 
 }
