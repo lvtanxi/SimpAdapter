@@ -94,6 +94,13 @@ public class DefaultViewConvert implements IViewConvert<DefaultViewConvert> {
     }
 
     @Override
+    public DefaultViewConvert setImageLevel(int viewId, int level) {
+        ImageView view = findViewById(viewId);
+        view.setImageLevel(level);
+        return this;
+    }
+
+    @Override
     public DefaultViewConvert setImage(int viewId, Drawable drawable) {
         ImageView view = findViewById(viewId);
         view.setImageDrawable(drawable);

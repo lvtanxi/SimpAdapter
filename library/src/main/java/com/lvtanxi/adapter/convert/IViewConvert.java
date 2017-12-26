@@ -30,6 +30,8 @@ public interface IViewConvert<VI extends IViewConvert> {
 
     VI  setImage(int viewId, int res);
 
+    VI  setImageLevel(int viewId, int level);
+
     VI setImage(int viewId, Drawable drawable);
 
     VI setBackground(int viewId, int res);
