@@ -6,82 +6,87 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
-public interface IViewConvert<VI extends IViewConvert> {
+public interface IViewConvert {
 
-    <T extends View> T findViewById(int viewId);
+    <T extends View> T getView(int viewId);
 
-    VI setTag(int viewId, Object object);
+    TextView getTextView(int viewId);
 
-    VI setText(int viewId, int res);
+    ImageView getImageView(int viewId);
 
-    VI setText(int viewId, CharSequence charSequence);
+    IViewConvert setTag(int viewId, Object object);
 
-    VI setTypeface(int viewId, Typeface typeface, int style);
+    IViewConvert setText(int viewId, int res);
 
-    VI setTypeface(int viewId, Typeface typeface);
+    IViewConvert setText(int viewId, CharSequence charSequence);
 
-    VI setTextColor(int viewId, int color);
+    IViewConvert setTypeface(int viewId, Typeface typeface, int style);
 
-    VI setTextSize(int viewId, int sp);
+    IViewConvert setTypeface(int viewId, Typeface typeface);
 
-    VI  setAlpha(int viewId, float alpha);
+    IViewConvert setTextColor(int viewId, int color);
 
-    VI  setImage(int viewId, int res);
+    IViewConvert setTextSize(int viewId, int sp);
 
-    VI  setImageLevel(int viewId, int level);
+    IViewConvert  setAlpha(int viewId, float alpha);
 
-    VI setImage(int viewId, Drawable drawable);
+    IViewConvert  setImage(int viewId, int res);
 
-    VI setBackground(int viewId, int res);
+    IViewConvert  setImageLevel(int viewId, int level);
 
-    VI setBackground(int viewId, Drawable drawable);
+    IViewConvert setImage(int viewId, Drawable drawable);
 
-    VI visible(int viewId);
+    IViewConvert setBackground(int viewId, int res);
 
-    VI visible(int viewId,boolean show);
+    IViewConvert setBackground(int viewId, Drawable drawable);
 
-    VI invisible(int viewId);
+    IViewConvert visible(int viewId);
 
-    VI gone(int viewId);
+    IViewConvert visible(int viewId,boolean show);
 
-    VI visibility(int viewId, int visibility);
+    IViewConvert invisible(int viewId);
 
-    <V extends View> VI with(int viewId, Action<V> action);
+    IViewConvert gone(int viewId);
 
-    VI setOnClickListener(int viewId, View.OnClickListener listener);
+    IViewConvert visibility(int viewId, int visibility);
 
-    VI setOnLongClickListener(int viewId, View.OnLongClickListener listener);
+    <V extends View> IViewConvert with(int viewId, Action<V> action);
 
-    VI setOnItemChildClickListener(int viewId);
+    IViewConvert setOnClickListener(int viewId, View.OnClickListener listener);
 
-    VI setEnabled(int viewId, boolean enable);
+    IViewConvert setOnLongClickListener(int viewId, View.OnLongClickListener listener);
 
-    VI enable(int viewId);
+    IViewConvert setOnItemChildClickListener(int viewId);
 
-    VI disable(int viewId);
+    IViewConvert setEnabled(int viewId, boolean enable);
 
-    VI setChecked(int viewId, boolean checked);
+    IViewConvert enable(int viewId);
 
-    VI setSelected(int viewId, boolean selected);
+    IViewConvert disable(int viewId);
 
-    VI setPressed(int viewId, boolean pressed);
+    IViewConvert setChecked(int viewId, boolean checked);
 
-    VI setAdapter(int viewId, RecyclerView.Adapter adapter);
+    IViewConvert setSelected(int viewId, boolean selected);
 
-    VI setAdapter(int viewId, Adapter adapter);
+    IViewConvert setPressed(int viewId, boolean pressed);
 
-    VI setLayoutManager(int viewId, RecyclerView.LayoutManager layoutManager);
+    IViewConvert setAdapter(int viewId, RecyclerView.Adapter adapter);
 
-    ///COMMON VIEWGROUP
-    VI addView(int viewId, View... views);
+    IViewConvert setAdapter(int viewId, Adapter adapter);
 
-    VI addView(int viewId, View view, ViewGroup.LayoutParams params);
+    IViewConvert setLayoutManager(int viewId, RecyclerView.LayoutManager layoutManager);
 
-    VI removeAllViews(int viewId);
+    IViewConvert addView(int viewId, View... views);
 
-    VI removeView(int viewId, View view);
+    IViewConvert addView(int viewId, View view, ViewGroup.LayoutParams params);
+
+    IViewConvert removeAllViews(int viewId);
+
+    IViewConvert removeView(int viewId, View view);
 
     interface Action<V extends View> {
         void action(V v);

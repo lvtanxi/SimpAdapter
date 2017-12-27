@@ -60,7 +60,7 @@ public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
     protected abstract void convert(IViewConvert convert, D d, int position);
 
 
-    public final <T extends View> T id(int id) {
+    public final <T extends View> T getView(int id) {
         View view = mViewSparseArray.get(id);
         if (view == null) {
             view = itemView.findViewById(id);

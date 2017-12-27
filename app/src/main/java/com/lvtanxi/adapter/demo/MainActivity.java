@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         currentData = new ArrayList<>(data);
-        recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
+        recyclerView =  findViewById(R.id.recyler_view);
         CustomLayoutManager customLayoutManager = new CustomLayoutManager();
         customLayoutManager.setSpanSizeLookup(new CustomLayoutManager.SpanSizeLookup() {
             @Override
@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void convert(IViewConvert convert, User user, int position) {
                         Log.d("MainActivity", "item_user");
+                        convert.<ImageView>getView(R.id.avatar).setImageResource( user.getAvatarRes());
                         convert.setText(R.id.name, user.getName())
-                                .setImage(R.id.avatar, user.getAvatarRes())
                                 .setText(R.id.phone, user.getPhone())
                                 .setTextColor(R.id.phone, Color.RED)
                                 .setTextSize(R.id.phone, 12);
