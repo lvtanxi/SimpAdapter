@@ -9,7 +9,7 @@ import android.view.View;
  */
 
 public abstract class OnNoDoubleClickListener implements View.OnClickListener {
-    private int mThrottleFirstTime = 1000;
+    private int mThrottleFirstTime = 200;
     private long mLastClickTime = 0;
 
     public OnNoDoubleClickListener() {
