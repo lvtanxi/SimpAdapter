@@ -1,4 +1,4 @@
-package com.lvtanxi.adapter.listener;
+package com.lvtanxi.listener;
 
 import android.view.View;
 

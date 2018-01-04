@@ -1,4 +1,4 @@
-package com.lvtanxi.adapter.manager;
+package com.lvtanxi.adapter.demo;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

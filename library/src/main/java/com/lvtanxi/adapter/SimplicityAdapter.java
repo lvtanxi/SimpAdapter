@@ -4,10 +4,12 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.lvtanxi.adapter.convert.IViewConvert;
-import com.lvtanxi.adapter.listener.IViewHolderCreator;
-import com.lvtanxi.adapter.listener.OnItemChildClickListener;
-import com.lvtanxi.adapter.listener.OnItemClickListener;
+import com.lvtanxi.convert.ViewConvert;
+import com.lvtanxi.convert.SimplicityConvert;
+import com.lvtanxi.holder.SimplicityViewHolder;
+import com.lvtanxi.listener.ViewHolderCreator;
+import com.lvtanxi.listener.OnItemChildClickListener;
+import com.lvtanxi.listener.OnItemClickListener;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -20,15 +22,15 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     private List<Type> mDataTypes = new ArrayList<>();
 
-    private Map<Type, IViewHolderCreator> mCreators = new ArrayMap<>();
-    private IViewHolderCreator mDefaultCreator = null;
+    private Map<Type, ViewHolderCreator> mCreators = new ArrayMap<>();
+    private ViewHolderCreator mDefaultCreator = null;
 
     private Map<Type, OnItemClickListener> mItemClickListeners = new ArrayMap<>();
     private OnItemClickListener mDefaultItemClickListener = null;
 
     private OnItemChildClickListener mOnItemClickListener = null;
 
-    private List<Object> mDatas;
+    protected List<Object> mDatas;
 
     protected SimplicityAdapter() {
         mDatas = new ArrayList<>();
@@ -44,7 +46,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+      throw new RuntimeException("创建adapter失败");
     }
 
 
@@ -82,7 +84,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     @Override
     public SimplicityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Type dataType = mDataTypes.get(viewType);
-        IViewHolderCreator creator = mCreators.get(dataType);
+        ViewHolderCreator creator = mCreators.get(dataType);
         if (creator == null) {
             if (mDefaultCreator == null)
                 throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
@@ -132,13 +134,13 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
 
-    private <T> IViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
-        return new IViewHolderCreator<T>() {
+    private <T> ViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
+        return new ViewHolderCreator<T>() {
             @Override
             public SimplicityViewHolder<T> create(ViewGroup parent) {
                 return new SimplicityViewHolder<T>(parent, layoutRes) {
                     @Override
-                    protected void convert(IViewConvert viewConvert, T t, int position) {
+                    protected void convert(ViewConvert viewConvert, T t, int position) {
                         simplicityConvert.convert(viewConvert, t, position);
                     }
                 };
@@ -173,7 +175,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        Object item = mDatas.get(position);
+        Object item = getItem(position);
         int index = mDataTypes.indexOf(item.getClass());
         if (index == -1) {
             mDataTypes.add(item.getClass());
@@ -192,6 +194,11 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     public boolean isEmpty() {
         return mDatas.size()==0;
+    }
+
+
+    public <T>T convert(){
+        return (T) this;
     }
 
 

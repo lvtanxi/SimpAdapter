@@ -1,4 +1,4 @@
-package com.lvtanxi.adapter.listener;
+package com.lvtanxi.listener;
 
 import android.view.View;
 
@@ -7,10 +7,10 @@ import android.view.View;
  * Time: 13:34
  * Description: ItemView的点击事件
  */
-public interface OnItemChildClickListener {
+public interface OnItemClickListener<T> {
   /* 回调
      * @param view 点击View
      * @param position 点击下标
      */
-    void onItemChildClick(View view, int position);
+    void onItemClick(View view,T t, int position);
 }

@@ -2,6 +2,8 @@ package com.lvtanxi.adapter;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.lvtanxi.holder.SimplicityViewHolder;
+
 
 abstract class AbstractSimplicityAdapter extends RecyclerView.Adapter<SimplicityViewHolder> {
 
