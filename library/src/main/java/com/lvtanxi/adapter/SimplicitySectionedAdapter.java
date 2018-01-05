@@ -2,8 +2,8 @@ package com.lvtanxi.adapter;
 
 import android.util.SparseIntArray;
 
-import com.lvtanxi.listener.OnSectionedListener;
-import com.lvtanxi.listener.Section;
+import com.lvtanxi.adapter.listener.OnSectionedListener;
+import com.lvtanxi.adapter.listener.Section;
 
 
 /**

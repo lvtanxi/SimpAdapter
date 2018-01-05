@@ -1,4 +1,4 @@
-package com.lvtanxi.holder;
+package com.lvtanxi.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lvtanxi.convert.DefaultViewConvert;
-import com.lvtanxi.convert.ViewConvert;
-import com.lvtanxi.listener.OnItemChildClickListener;
-import com.lvtanxi.listener.OnItemClickListener;
-import com.lvtanxi.listener.OnNoDoubleClickListener;
+import com.lvtanxi.adapter.convert.DefaultViewConvert;
+import com.lvtanxi.adapter.convert.ViewConvert;
+import com.lvtanxi.adapter.listener.OnItemChildClickListener;
+import com.lvtanxi.adapter.listener.OnItemClickListener;
+import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
 /**
  * Date: 2017-12-08

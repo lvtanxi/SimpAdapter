@@ -2,7 +2,7 @@ package com.lvtanxi.adapter.demo;
 
 import android.annotation.SuppressLint;
 
-import com.lvtanxi.listener.Section;
+import com.lvtanxi.adapter.listener.Section;
 
 import java.util.ArrayList;
 import java.util.List;

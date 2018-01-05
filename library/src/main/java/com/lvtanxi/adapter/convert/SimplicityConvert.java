@@ -1,4 +1,4 @@
-package com.lvtanxi.convert;
+package com.lvtanxi.adapter.convert;
 
 
 public interface SimplicityConvert<T> {

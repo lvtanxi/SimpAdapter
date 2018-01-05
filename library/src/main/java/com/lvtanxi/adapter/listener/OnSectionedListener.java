@@ -1,4 +1,4 @@
-package com.lvtanxi.listener;
+package com.lvtanxi.adapter.listener;
 
 /**
  * Date: 2018-01-04

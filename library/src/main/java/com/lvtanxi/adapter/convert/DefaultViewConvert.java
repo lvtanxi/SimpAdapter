@@ -1,4 +1,4 @@
-package com.lvtanxi.convert;
+package com.lvtanxi.adapter.convert;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -14,8 +14,8 @@ import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lvtanxi.holder.SimplicityViewHolder;
-import com.lvtanxi.listener.OnNoDoubleClickListener;
+import com.lvtanxi.adapter.holder.SimplicityViewHolder;
+import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
 
 public class DefaultViewConvert implements ViewConvert {

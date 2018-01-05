@@ -1,4 +1,4 @@
-package com.lvtanxi.decoration;
+package com.lvtanxi.adapter.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;

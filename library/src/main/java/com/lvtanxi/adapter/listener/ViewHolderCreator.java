@@ -1,8 +1,8 @@
-package com.lvtanxi.listener;
+package com.lvtanxi.adapter.listener;
 
 import android.view.ViewGroup;
 
-import com.lvtanxi.holder.SimplicityViewHolder;
+import com.lvtanxi.adapter.holder.SimplicityViewHolder;
 
 /**
  * Date: 2017-12-08

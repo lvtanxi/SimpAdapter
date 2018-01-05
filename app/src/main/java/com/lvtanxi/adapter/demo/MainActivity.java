@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.lvtanxi.adapter.SimplicityAdapter;
 import com.lvtanxi.adapter.SimplicitySectionedAdapter;
-import com.lvtanxi.convert.SimplicityConvert;
-import com.lvtanxi.convert.ViewConvert;
+import com.lvtanxi.adapter.convert.SimplicityConvert;
+import com.lvtanxi.adapter.convert.ViewConvert;
 
 import java.util.ArrayList;
 import java.util.List;

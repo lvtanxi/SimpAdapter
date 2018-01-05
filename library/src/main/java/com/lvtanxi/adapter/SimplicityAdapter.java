@@ -4,12 +4,12 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.lvtanxi.convert.ViewConvert;
-import com.lvtanxi.convert.SimplicityConvert;
-import com.lvtanxi.holder.SimplicityViewHolder;
-import com.lvtanxi.listener.ViewHolderCreator;
-import com.lvtanxi.listener.OnItemChildClickListener;
-import com.lvtanxi.listener.OnItemClickListener;
+import com.lvtanxi.adapter.convert.ViewConvert;
+import com.lvtanxi.adapter.convert.SimplicityConvert;
+import com.lvtanxi.adapter.holder.SimplicityViewHolder;
+import com.lvtanxi.adapter.listener.ViewHolderCreator;
+import com.lvtanxi.adapter.listener.OnItemChildClickListener;
+import com.lvtanxi.adapter.listener.OnItemClickListener;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
