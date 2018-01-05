@@ -9,7 +9,6 @@ import com.lvtanxi.adapter.SimplicityAdapter;
 import com.lvtanxi.adapter.SimplicitySectionedAdapter;
 import com.lvtanxi.convert.SimplicityConvert;
 import com.lvtanxi.convert.ViewConvert;
-import com.lvtanxi.listener.OnSectionedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,17 +74,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setLayoutManager(gridLayoutManager);
         mSimplicitySectionedAdapter=SimplicityAdapter.create(SimplicitySectionedAdapter.class)
-                .registerSectionedListener(new OnSectionedListener<SectionData>() {
-                    @Override
-                    public int getSectionedChildCount(SectionData sectionData, int sectioned) {
-                        return sectionData.getStrings().size();
-                    }
-
-                    @Override
-                    public Object getSectionedChildItem(SectionData sectionData, int sectioned, int position) {
-                        return sectionData.getStrings().get(position);
-                    }
-                })
                 .register(R.layout.item_setion_header, new SimplicityConvert<SectionData>() {
                     @Override
                     public void convert(ViewConvert convert, SectionData sectionData, int position) {
@@ -98,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attachTo(recyclerView).
                         convert();
-        mSimplicitySectionedAdapter.addItems(currentData, true)
-        ;
+        mSimplicitySectionedAdapter.addItems(currentData, true);
     }
 
 }

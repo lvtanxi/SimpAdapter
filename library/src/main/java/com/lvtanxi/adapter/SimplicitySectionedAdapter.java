@@ -3,6 +3,7 @@ package com.lvtanxi.adapter;
 import android.util.SparseIntArray;
 
 import com.lvtanxi.listener.OnSectionedListener;
+import com.lvtanxi.listener.Section;
 
 
 /**
@@ -17,6 +18,7 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
     private final SparseIntArray mSectionMap;
     //存储Position对应的子View的Position
     private final SparseIntArray mPositionMap;
+
     private OnSectionedListener mSectionedListener;
 
 
@@ -33,7 +35,9 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
      */
     private int getSectionedCount(int section) {
         if (mSectionedListener != null)
-            return mSectionedListener.getSectionedChildCount(mDatas.get(section),section);
+            return mSectionedListener.getSectionedChildCount(mDatas.get(section), section);
+        else if (mDatas.get(section) instanceof Section)
+            return ((Section) mDatas.get(section)).getSectionChildCount();
         return 0;
     }
 
@@ -42,13 +46,15 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
         int section = getSectionIndex(position);
         if (isSectioned(position)) {
             return mDatas.get(section);
-        }else if(mSectionedListener!=null){
+        } else if (mSectionedListener != null) {
             int child = mPositionMap.get(position);
-            return mSectionedListener.getSectionedChildItem(mDatas.get(section),section,child);
+            return mSectionedListener.getSectionedChildItem(mDatas.get(section), section, child);
+        } else if (mDatas.get(section) instanceof Section) {
+            int child = mPositionMap.get(position);
+            return ((Section) mDatas.get(section)).getSectionChildItem(child);
         }
         throw new RuntimeException("没有找到对应的item");
     }
-
 
 
     /**
@@ -94,20 +100,20 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
             if (itemCount > 0) {
                 //这里先存储条目位置
                 mHeaderLocationMap.put(count, s);
-                count += itemCount+1;
+                count += itemCount + 1;
             }
         }
         return count;
     }
 
 
-    public <T>SimplicitySectionedAdapter registerSectionedListener(OnSectionedListener<T> sectionedListener) {
+    public <T> SimplicitySectionedAdapter registerSectionedListener(OnSectionedListener<T> sectionedListener) {
         this.mSectionedListener = sectionedListener;
         return this;
     }
 
 
-    public void clearSectionedData(){
+    public void clearSectionedData() {
         mHeaderLocationMap.clear();
         mSectionMap.clear();
         mPositionMap.clear();

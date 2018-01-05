@@ -2,12 +2,14 @@ package com.lvtanxi.adapter.demo;
 
 import android.annotation.SuppressLint;
 
+import com.lvtanxi.listener.Section;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 
-public class SectionData {
+public class SectionData implements Section {
 
     private String title;
 
@@ -17,7 +19,7 @@ public class SectionData {
         mStrings=new ArrayList<>();
         int num = new Random().nextInt(20);
         for (int i = 0; i < num; i++) {
-            mStrings.add(String.format("第%d条目的第%d个item",position,i));
+            mStrings.add(String.format("条目%d的第%d个",position,i));
         }
     }
 
@@ -39,5 +41,15 @@ public class SectionData {
 
     public void setStrings(List<String> strings) {
         mStrings = strings;
+    }
+
+    @Override
+    public int getSectionChildCount() {
+        return mStrings.size();
+    }
+
+    @Override
+    public Object getSectionChildItem(int childPosition) {
+        return mStrings.get(childPosition);
     }
 }
