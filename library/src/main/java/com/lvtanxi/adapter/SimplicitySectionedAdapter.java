@@ -1,5 +1,7 @@
 package com.lvtanxi.adapter;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 
 import com.lvtanxi.adapter.listener.OnSectionedListener;
@@ -20,6 +22,8 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
     private final SparseIntArray mPositionMap;
 
     private OnSectionedListener mSectionedListener;
+
+    private boolean mOpenSctionChange=true;
 
 
     public SimplicitySectionedAdapter() {
@@ -106,6 +110,26 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
         return count;
     }
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if(!mOpenSctionChange)
+            return;
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return isSectioned(position) ? gridManager.getSpanCount() : 1;
+                }
+            });
+        }
+    }
+
+    public void setOpenSctionChange(boolean openSctionChange) {
+        mOpenSctionChange = openSctionChange;
+    }
 
     public <T> SimplicitySectionedAdapter registerSectionedListener(OnSectionedListener<T> sectionedListener) {
         this.mSectionedListener = sectionedListener;

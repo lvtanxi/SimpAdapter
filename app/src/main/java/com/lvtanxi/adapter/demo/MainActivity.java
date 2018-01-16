@@ -9,6 +9,7 @@ import com.lvtanxi.adapter.SimplicityAdapter;
 import com.lvtanxi.adapter.SimplicitySectionedAdapter;
 import com.lvtanxi.adapter.convert.SimplicityConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
+import com.lvtanxi.adapter.decoration.SectionDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         data.add(new SectionData("条目4",4));
         data.add(new SectionData("条目5",5));
         data.add(new SectionData("条目6",6));
+        data.add(new SectionData("条目7",7));
+        data.add(new SectionData("条目8",8));
+        data.add(new SectionData("条目9",9));
        /* data.add(new User("Jack", 21, R.drawable.icon1, "123456789XX"));
         data.add(new User("Marry", 17, R.drawable.icon2, "123456789XX"));
 
@@ -66,13 +70,8 @@ public class MainActivity extends AppCompatActivity {
         currentData = new ArrayList<>(data);
         recyclerView = findViewById(R.id.recyler_view);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return mSimplicitySectionedAdapter.isSectioned(position)?3:1;
-            }
-        });
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addItemDecoration(new SectionDecoration(0));
         mSimplicitySectionedAdapter=SimplicityAdapter.create(SimplicitySectionedAdapter.class)
                 .register(R.layout.item_setion_header, new SimplicityConvert<SectionData>() {
                     @Override
