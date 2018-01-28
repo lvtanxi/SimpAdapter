@@ -134,7 +134,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
 
-    private <T> ViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
+    protected <T> ViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
         return new ViewHolderCreator<T>() {
             @Override
             public SimplicityViewHolder<T> create(ViewGroup parent) {
