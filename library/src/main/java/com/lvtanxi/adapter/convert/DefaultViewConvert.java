@@ -276,15 +276,17 @@ public class DefaultViewConvert implements ViewConvert {
      * 为id为viewId的item子控件设置点击事件监听器
      */
     @Override
-    public DefaultViewConvert setOnItemChildClickListener(@IdRes int viewId) {
-        View view = getView(viewId);
-        if (view != null) {
-            view.setOnClickListener(new OnNoDoubleClickListener() {
-                @Override
-                public void onNoDoubleClick(View v) {
-                    viewHolder.invokeOnItemChildClickListener(v);
-                }
-            });
+    public DefaultViewConvert setOnItemChildClickListener( int ...viewIds) {
+        for (int viewId : viewIds) {
+            View view = getView(viewId);
+            if (view != null) {
+                view.setOnClickListener(new OnNoDoubleClickListener() {
+                    @Override
+                    public void onNoDoubleClick(View v) {
+                        viewHolder.invokeOnItemChildClickListener(v);
+                    }
+                });
+            }
         }
         return this;
     }

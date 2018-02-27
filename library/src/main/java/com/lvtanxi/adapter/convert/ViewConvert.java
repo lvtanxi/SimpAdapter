@@ -64,7 +64,7 @@ public interface ViewConvert {
 
     ViewConvert setOnLongClickListener(int viewId, View.OnLongClickListener listener);
 
-    ViewConvert setOnItemChildClickListener(int viewId);
+    ViewConvert setOnItemChildClickListener(int ...viewIds);
 
     ViewConvert setEnabled(int viewId, boolean enable);
 
