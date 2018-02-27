@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -175,6 +176,15 @@ public class DefaultViewConvert implements ViewConvert {
     @Override
     public DefaultViewConvert setOnClickListener(int viewId, View.OnClickListener listener) {
         getView(viewId).setOnClickListener(listener);
+        return this;
+    }
+
+    @Override
+    public ViewConvert setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener) {
+        View view = getView(viewId);
+        if (view != null && view instanceof CompoundButton) {
+            ((CompoundButton) view).setOnCheckedChangeListener(listener);
+        }
         return this;
     }
 

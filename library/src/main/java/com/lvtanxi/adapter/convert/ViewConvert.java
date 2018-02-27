@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,11 +63,14 @@ public interface ViewConvert {
 
     ViewConvert setOnClickListener(int viewId, View.OnClickListener listener);
 
+    ViewConvert setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener);
+
     ViewConvert setOnLongClickListener(int viewId, View.OnLongClickListener listener);
 
     ViewConvert setOnItemChildClickListener(int ...viewIds);
 
     ViewConvert setEnabled(int viewId, boolean enable);
+
 
     ViewConvert enable(int viewId);
 
