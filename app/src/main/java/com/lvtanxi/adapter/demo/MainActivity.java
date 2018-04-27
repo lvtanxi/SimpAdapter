@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.lvtanxi.adapter.SimplicityAdapter;
 import com.lvtanxi.adapter.SimplicitySectionedAdapter;
+import com.lvtanxi.adapter.convert.LayoutConvert;
 import com.lvtanxi.adapter.convert.SimplicityConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.decoration.SectionDecoration;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .register(R.layout.item_setion_header, new SimplicityConvert<SectionData>() {
                     @Override
                     public void convert(ViewConvert convert, SectionData sectionData, int position) {
+                        System.out.println(convert);
                         convert.setText(R.id.section_title,sectionData.getTitle());
                     }
                 }).register(R.layout.item_body, new SimplicityConvert<String>() {
