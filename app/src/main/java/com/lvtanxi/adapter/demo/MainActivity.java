@@ -80,13 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(convert);
                         convert.setText(R.id.section_title,sectionData.getTitle());
                     }
-                }).register(R.layout.item_body, new SimplicityConvert<String>() {
-            @Override
-            public void convert(ViewConvert convert, String s, int position) {
-                convert.setText(R.id.iem_body, s);
-            }
-        }).attachTo(recyclerView).
-                        convert();
+                }).register(R.layout.item_body, new LayoutConvert(String.class)).attachTo(recyclerView).convert();
         mSimplicitySectionedAdapter.addItems(currentData, true);
     }
 

@@ -4,6 +4,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.lvtanxi.adapter.convert.LayoutConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.convert.SimplicityConvert;
 import com.lvtanxi.adapter.holder.SimplicityViewHolder;
@@ -46,7 +47,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-      throw new RuntimeException("创建adapter失败");
+        throw new RuntimeException("创建adapter失败");
     }
 
 
@@ -124,7 +125,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
     public <T> SimplicityAdapter registerDefaultOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
-        mDefaultItemClickListener= onItemClickListener;
+        mDefaultItemClickListener = onItemClickListener;
         return this;
     }
 
@@ -149,6 +150,11 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
     private Type getConvertActualTypeArguments(Object convert) {
+        if (convert == null)
+            throw new IllegalArgumentException("SimplicityConvert not null");
+        if (convert instanceof LayoutConvert){
+            return ((LayoutConvert)convert).getTagetClass();
+        }
         Type[] interfaces = convert.getClass().getGenericInterfaces();
         for (Type type : interfaces) {
             if (type instanceof ParameterizedType) {
@@ -193,11 +199,11 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
     }
 
     public boolean isEmpty() {
-        return mDatas.size()==0;
+        return mDatas.size() == 0;
     }
 
 
-    public <T>T convert(){
+    public <T> T convert() {
         return (T) this;
     }
 
@@ -206,7 +212,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         return (mDatas.size() - 1) == position;
     }
 
-    public <T> T getItemModel(int position){
+    public <T> T getItemModel(int position) {
         return (T) getItem(position);
     }
 
