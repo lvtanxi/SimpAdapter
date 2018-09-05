@@ -5,10 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.lvtanxi.adapter.SimplicityAdapter;
-import com.lvtanxi.adapter.SimplicitySectionedAdapter;
+import com.lvtanxi.adapter.SimpAdapter;
+import com.lvtanxi.adapter.SimpSectionedAdapter;
 import com.lvtanxi.adapter.convert.LayoutConvert;
-import com.lvtanxi.adapter.convert.SimplicityConvert;
+import com.lvtanxi.adapter.convert.SimpConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.decoration.SectionDecoration;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final List<SectionData> data = new ArrayList<>();
 
     private List<SectionData> currentData = null;
-    private SimplicitySectionedAdapter mSimplicitySectionedAdapter;
+    private SimpAdapter mSimpSectionedAdapter;
 
     static {
         data.add(new SectionData("条目1",1));
@@ -73,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addItemDecoration(new SectionDecoration(0));
-        mSimplicitySectionedAdapter=SimplicityAdapter.create(SimplicitySectionedAdapter.class)
-                .register(R.layout.item_setion_header, new SimplicityConvert<SectionData>() {
+        mSimpSectionedAdapter=SimpAdapter.create(SimpSectionedAdapter.class)
+                .register(R.layout.item_setion_header, new SimpConvert<SectionData>() {
                     @Override
                     public void convert(ViewConvert convert, SectionData sectionData, int position) {
                         System.out.println(convert);
                         convert.setText(R.id.section_title,sectionData.getTitle());
                     }
                 }).register(R.layout.item_body, new LayoutConvert(String.class)).attachTo(recyclerView).convert();
-        mSimplicitySectionedAdapter.addItems(currentData, true);
+        mSimpSectionedAdapter.addItems(currentData);
     }
 
 }

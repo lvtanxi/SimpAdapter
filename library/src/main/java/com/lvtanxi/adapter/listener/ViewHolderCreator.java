@@ -2,7 +2,7 @@ package com.lvtanxi.adapter.listener;
 
 import android.view.ViewGroup;
 
-import com.lvtanxi.adapter.holder.SimplicityViewHolder;
+import com.lvtanxi.adapter.holder.SimpViewHolder;
 
 /**
  * Date: 2017-12-08
@@ -14,5 +14,5 @@ public interface ViewHolderCreator<T> {
      *创建SimplicityViewHolder
      * @param parent 父类控件
      */
-    SimplicityViewHolder<T> create(ViewGroup parent);
+    SimpViewHolder<T> create(ViewGroup parent);
 }

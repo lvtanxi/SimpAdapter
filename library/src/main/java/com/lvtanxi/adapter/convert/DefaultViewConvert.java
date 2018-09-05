@@ -3,7 +3,6 @@ package com.lvtanxi.adapter.convert;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,15 +14,15 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lvtanxi.adapter.holder.SimplicityViewHolder;
+import com.lvtanxi.adapter.holder.SimpViewHolder;
 import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
 
 public class DefaultViewConvert implements ViewConvert {
 
-    private SimplicityViewHolder viewHolder;
+    private SimpViewHolder viewHolder;
 
-    public DefaultViewConvert(SimplicityViewHolder viewHolder) {
+    public DefaultViewConvert(SimpViewHolder viewHolder) {
         this.viewHolder = viewHolder;
     }
 

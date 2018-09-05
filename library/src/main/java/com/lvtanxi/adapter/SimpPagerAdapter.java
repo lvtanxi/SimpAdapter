@@ -1,5 +1,6 @@
 package com.lvtanxi.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
 import android.view.View;
@@ -13,17 +14,17 @@ import java.util.List;
  * Time: 8:39
  * Description:PagerAdapter基类
  */
-public abstract class SimplicityPagerAdapter<T> extends PagerAdapter {
+public abstract class SimpPagerAdapter<T> extends PagerAdapter {
     protected List<T> mData;
 
     private SparseArray<View> mViews;
 
-    public SimplicityPagerAdapter(List<T> data) {
+    public SimpPagerAdapter(List<T> data) {
         mData = data;
         mViews = new SparseArray<>();
     }
 
-    public SimplicityPagerAdapter() {
+    public SimpPagerAdapter() {
         this(null);
     }
 
@@ -38,16 +39,17 @@ public abstract class SimplicityPagerAdapter<T> extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mData==null ? 0 : mData.size();
+        return mData == null ? 0 : mData.size();
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = mViews.get(position);
         if (view == null) {
             view = newView(getItem(position));
@@ -60,7 +62,7 @@ public abstract class SimplicityPagerAdapter<T> extends PagerAdapter {
     public abstract View newView(T t);
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView(mViews.get(position));
     }
 

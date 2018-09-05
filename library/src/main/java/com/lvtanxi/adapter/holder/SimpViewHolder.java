@@ -17,7 +17,7 @@ import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
  * Time: 15:34
  * Description: RecyclerView.ViewHolder 实体
  */
-public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
+public abstract class SimpViewHolder<D> extends RecyclerView.ViewHolder {
 
     /**
      * 记录获取过的View
@@ -42,14 +42,14 @@ public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
     /**
      * 根据layout获取itemView
      */
-    public SimplicityViewHolder(ViewGroup parent, int itemLayoutRes) {
+    public SimpViewHolder(ViewGroup parent, int itemLayoutRes) {
         this(LayoutInflater.from(parent.getContext()).inflate(itemLayoutRes, parent, false));
     }
 
     /**
      * 初始化SparseArray
      */
-    public SimplicityViewHolder(View itemView) {
+    public SimpViewHolder(View itemView) {
         super(itemView);
         mViewSparseArray = new SparseArray<>();
     }
@@ -69,7 +69,7 @@ public abstract class SimplicityViewHolder<D> extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new OnNoDoubleClickListener() {
                 @Override
                 public void onNoDoubleClick(View v) {
-                    if (v.getId() == SimplicityViewHolder.this.itemView.getId()) {
+                    if (v.getId() == SimpViewHolder.this.itemView.getId()) {
                         if (onItemClickListener != null)
                             onItemClickListener.onItemClick(v, mData, getAdapterPosition());
                         else

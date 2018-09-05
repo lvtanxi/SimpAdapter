@@ -13,7 +13,7 @@ import com.lvtanxi.adapter.listener.Section;
  * Time: 13:34
  * Description: 分组adapter(设计相对简单)
  */
-public class SimplicitySectionedAdapter extends SimplicityAdapter {
+public class SimpSectionedAdapter extends SimpAdapter {
     //存储Sectioned对应的Position
     private final SparseIntArray mHeaderLocationMap;
     //存储Position对应的Sectioned
@@ -26,7 +26,7 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
     private boolean mOpenSctionChange=true;
 
 
-    public SimplicitySectionedAdapter() {
+    public SimpSectionedAdapter() {
         super();
         mHeaderLocationMap = new SparseIntArray();
         mSectionMap = new SparseIntArray();
@@ -131,7 +131,7 @@ public class SimplicitySectionedAdapter extends SimplicityAdapter {
         mOpenSctionChange = openSctionChange;
     }
 
-    public <T> SimplicitySectionedAdapter registerSectionedListener(OnSectionedListener<T> sectionedListener) {
+    public <T> SimpSectionedAdapter registerSectionedListener(OnSectionedListener<T> sectionedListener) {
         this.mSectionedListener = sectionedListener;
         return this;
     }

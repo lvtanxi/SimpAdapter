@@ -1,6 +1,5 @@
 package com.lvtanxi.adapter.convert;
 
-
-public interface SimplicityConvert<T> {
+public interface SimpConvert<T> {
     void convert(ViewConvert convert, T t, int position);
 }

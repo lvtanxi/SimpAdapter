@@ -1,16 +1,17 @@
 package com.lvtanxi.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.lvtanxi.adapter.convert.LayoutConvert;
+import com.lvtanxi.adapter.convert.SimpConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
-import com.lvtanxi.adapter.convert.SimplicityConvert;
-import com.lvtanxi.adapter.holder.SimplicityViewHolder;
-import com.lvtanxi.adapter.listener.ViewHolderCreator;
+import com.lvtanxi.adapter.holder.SimpViewHolder;
 import com.lvtanxi.adapter.listener.OnItemChildClickListener;
 import com.lvtanxi.adapter.listener.OnItemClickListener;
+import com.lvtanxi.adapter.listener.ViewHolderCreator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SimplicityAdapter extends AbstractSimplicityAdapter {
+public class SimpAdapter extends AbsSimpAdapter {
 
     private List<Type> mDataTypes = new ArrayList<>();
 
@@ -33,15 +34,15 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
 
     protected List<Object> mDatas;
 
-    protected SimplicityAdapter() {
+    protected SimpAdapter() {
         mDatas = new ArrayList<>();
     }
 
-    public static SimplicityAdapter create() {
-        return new SimplicityAdapter();
+    public static SimpAdapter create() {
+        return new SimpAdapter();
     }
 
-    public static <T extends SimplicityAdapter> T create(Class<T> clazz) {
+    public static <T extends SimpAdapter> T create(Class<T> clazz) {
         try {
             return clazz.newInstance();
         } catch (Exception e) {
@@ -82,8 +83,10 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         return mDatas.size();
     }
 
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
     @Override
-    public SimplicityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Type dataType = mDataTypes.get(viewType);
         ViewHolderCreator creator = mCreators.get(dataType);
         if (creator == null) {
@@ -93,30 +96,29 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
             mCreators.put(dataType, mDefaultCreator);
         }
 
-        SimplicityViewHolder simplicityViewHolder = creator.create(parent);
-        if (simplicityViewHolder != null) {
-            simplicityViewHolder.bindOnItemClickListener(mDefaultItemClickListener, mItemClickListeners.get(dataType));
-            simplicityViewHolder.setOnItemChildClickListener(mOnItemClickListener);
+        SimpViewHolder simpViewHolder = creator.create(parent);
+        if (simpViewHolder != null) {
+            simpViewHolder.bindOnItemClickListener(mDefaultItemClickListener, mItemClickListeners.get(dataType));
+            simpViewHolder.setOnItemChildClickListener(mOnItemClickListener);
         }
-        return simplicityViewHolder;
+        return simpViewHolder;
     }
 
-
-    public <T> SimplicityAdapter register(int layoutRes, SimplicityConvert<T> simplicityConvert) {
-        Type type = getConvertActualTypeArguments(simplicityConvert);
+    public <T> SimpAdapter register(int layoutRes, SimpConvert<T> simpConvert) {
+        Type type = getConvertActualTypeArguments(simpConvert);
         if (type == null) {
             throw new IllegalArgumentException();
         }
-        mCreators.put(type, createSimplicityViewHolder(layoutRes, simplicityConvert));
+        mCreators.put(type, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
-    public <T> SimplicityAdapter registerDefault(int layoutRes, SimplicityConvert<T> simplicityConvert) {
-        mDefaultCreator = createSimplicityViewHolder(layoutRes, simplicityConvert);
+    public <T> SimpAdapter basic(int layoutRes, SimpConvert<T> simpConvert) {
+        mDefaultCreator = createSimpViewHolder(layoutRes, simpConvert);
         return this;
     }
 
-    public <T> SimplicityAdapter registerOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
+    public <T> SimpAdapter register(OnItemClickListener<T> onItemClickListener) {
         Type type = getConvertActualTypeArguments(onItemClickListener);
         if (type == null)
             throw new IllegalArgumentException();
@@ -124,34 +126,36 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         return this;
     }
 
-    public <T> SimplicityAdapter registerDefaultOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
+    public <T> SimpAdapter basic(OnItemClickListener<T> onItemClickListener) {
         mDefaultItemClickListener = onItemClickListener;
         return this;
     }
 
-    public SimplicityAdapter registerOnItemChildClickListener(OnItemChildClickListener itemChildClickListener) {
+    public SimpAdapter register(OnItemChildClickListener itemChildClickListener) {
         this.mOnItemClickListener = itemChildClickListener;
         return this;
     }
 
 
-    protected <T> ViewHolderCreator<T> createSimplicityViewHolder(final int layoutRes, final SimplicityConvert<T> simplicityConvert) {
+    protected <T> ViewHolderCreator<T> createSimpViewHolder(final int layoutRes, final SimpConvert<T> simpConvert) {
         return new ViewHolderCreator<T>() {
             @Override
-            public SimplicityViewHolder<T> create(ViewGroup parent) {
-                return new SimplicityViewHolder<T>(parent, layoutRes) {
+            public SimpViewHolder<T> create(ViewGroup parent) {
+                return new SimpViewHolder<T>(parent, layoutRes) {
                     @Override
                     protected void convert(ViewConvert viewConvert, T t, int position) {
-                        simplicityConvert.convert(viewConvert, t, position);
+                        simpConvert.convert(viewConvert, t, position);
                     }
                 };
             }
         };
     }
 
+
+
     private Type getConvertActualTypeArguments(Object convert) {
         if (convert == null)
-            throw new IllegalArgumentException("SimplicityConvert not null");
+            throw new IllegalArgumentException("SimpConvert not null");
         if (convert instanceof LayoutConvert){
             return ((LayoutConvert)convert).getTagetClass();
         }
@@ -159,12 +163,12 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         for (Type type : interfaces) {
             if (type instanceof ParameterizedType) {
                 Type rawType = ((ParameterizedType) type).getRawType();
-                if (rawType.equals(SimplicityConvert.class) || rawType.equals(OnItemClickListener.class)) {
+                if (rawType.equals(SimpConvert.class) || rawType.equals(OnItemClickListener.class)) {
                     Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
                     if (actualType instanceof Class) {
                         return actualType;
                     } else {
-                        throw new IllegalArgumentException("The generic type argument of SimplicityConvert is NOT support Generic Parameterized Type now, Please using a WRAPPER class install of it directly.");
+                        throw new IllegalArgumentException("The generic type argument of SimpConvert is NOT support Generic Parameterized Type now, Please using a WRAPPER class install of it directly.");
                     }
                 }
             }
@@ -172,7 +176,7 @@ public class SimplicityAdapter extends AbstractSimplicityAdapter {
         return null;
     }
 
-    public SimplicityAdapter attachTo(RecyclerView... recyclerViews) {
+    public SimpAdapter attachTo(RecyclerView... recyclerViews) {
         for (RecyclerView recyclerView : recyclerViews) {
             recyclerView.setAdapter(this);
         }

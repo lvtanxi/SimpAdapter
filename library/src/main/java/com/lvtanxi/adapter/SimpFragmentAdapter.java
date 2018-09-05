@@ -11,18 +11,18 @@ import java.util.List;
  * Time: 14:39
  * Description:FragmentStatePagerAdapter基类
  */
-public class SimplicityFragmentAdapter extends FragmentStatePagerAdapter {
+public class SimpFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;
     private CharSequence[] mTitles;
 
-    public SimplicityFragmentAdapter(FragmentManager fm, List<Fragment> fragments, CharSequence[] titles) {
+    public SimpFragmentAdapter(FragmentManager fm, List<Fragment> fragments, CharSequence[] titles) {
         super(fm);
         mFragments = fragments;
         mTitles = titles;
     }
 
 
-    public SimplicityFragmentAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public SimpFragmentAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         mFragments = fragments;
     }
