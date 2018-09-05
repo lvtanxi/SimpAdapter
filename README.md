@@ -1,5 +1,5 @@
 #### 目录
-[![](https://jitpack.io/v/lvtanxi/SimplicityAdapter.svg)](https://jitpack.io/#lvtanxi/SimplicityAdapter)
+[![](https://jitpack.io/v/lvtanxi/SimpAdapter.svg)](https://jitpack.io/#lvtanxi/SimpAdapter)
 
 
 ## 引入
@@ -12,6 +12,6 @@ allprojects {
 }
 ```
 ```
- implementation 'com.github.lvtanxi:SimplicityAdapter:lasetversion'
+ implementation 'com.github.lvtanxi:SimpAdapter:lasetversion'
 ```
 
