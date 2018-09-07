@@ -8,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import com.lvtanxi.adapter.SimpAdapter;
 import com.lvtanxi.adapter.SimpSectionedAdapter;
 import com.lvtanxi.adapter.convert.LayoutConvert;
-import com.lvtanxi.adapter.convert.SimpConvert;
-import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.decoration.SectionDecoration;
 
 import java.util.ArrayList;
@@ -25,15 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private SimpAdapter mSimpSectionedAdapter;
 
     static {
-        data.add(new SectionData("条目1",1));
-        data.add(new SectionData("条目2",2));
-        data.add(new SectionData("条目3",3));
-        data.add(new SectionData("条目4",4));
-        data.add(new SectionData("条目5",5));
-        data.add(new SectionData("条目6",6));
-        data.add(new SectionData("条目7",7));
-        data.add(new SectionData("条目8",8));
-        data.add(new SectionData("条目9",9));
+        data.add(new SectionData("条目1", 1));
+        data.add(new SectionData("条目2", 2));
+        data.add(new SectionData("条目3", 3));
+        data.add(new SectionData("条目4", 4));
+        data.add(new SectionData("条目5", 5));
+        data.add(new SectionData("条目6", 6));
+        data.add(new SectionData("条目7", 7));
+        data.add(new SectionData("条目8", 8));
+        data.add(new SectionData("条目9", 9));
        /* data.add(new User("Jack", 21, R.drawable.icon1, "123456789XX"));
         data.add(new User("Marry", 17, R.drawable.icon2, "123456789XX"));
 
@@ -67,20 +65,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         currentData = new ArrayList<>(data);
         recyclerView = findViewById(R.id.recyler_view);
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addItemDecoration(new SectionDecoration(0));
-        mSimpSectionedAdapter=SimpAdapter.create(SimpSectionedAdapter.class)
-                .register(R.layout.item_setion_header, new SimpConvert<SectionData>() {
-                    @Override
-                    public void convert(ViewConvert convert, SectionData sectionData, int position) {
-                        System.out.println(convert);
-                        convert.setText(R.id.section_title,sectionData.getTitle());
-                    }
-                }).register(R.layout.item_body, new LayoutConvert(String.class)).attachTo(recyclerView).convert();
+        mSimpSectionedAdapter = SimpAdapter.create(SimpSectionedAdapter.class)
+                .map(R.layout.item_setion_header, SectionData.class, (convert, sectionData, position) -> {
+                    System.out.println(convert);
+                    convert.setText(R.id.section_title, sectionData.getTitle());
+                }).map(R.layout.item_body, new LayoutConvert(String.class))
+                .attachTo(recyclerView).convert();
         mSimpSectionedAdapter.addItems(currentData);
     }
 

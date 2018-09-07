@@ -10,6 +10,10 @@ public class User {
     private int age;
     private int avatarRes;
 
+    public User() {
+
+    }
+
     public User(String name, int age, int avatarRes, String phone) {
         this.name = name;
         this.age = age;
@@ -32,4 +36,5 @@ public class User {
     public String getPhone() {
         return phone;
     }
+
 }

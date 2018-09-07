@@ -25,10 +25,8 @@ public class SimpAdapter extends AbsSimpAdapter {
     private List<Type> mDataTypes = new ArrayList<>();
 
     private Map<Type, ViewHolderCreator> mCreators = new ArrayMap<>();
-    private ViewHolderCreator mDefaultCreator = null;
 
     private Map<Type, OnItemClickListener> mItemClickListeners = new ArrayMap<>();
-    private OnItemClickListener mDefaultItemClickListener = null;
 
     private OnItemChildClickListener mOnItemClickListener = null;
 
@@ -89,47 +87,40 @@ public class SimpAdapter extends AbsSimpAdapter {
     public SimpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Type dataType = mDataTypes.get(viewType);
         ViewHolderCreator creator = mCreators.get(dataType);
-        if (creator == null) {
-            if (mDefaultCreator == null)
-                throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
-            creator = mDefaultCreator;
-            mCreators.put(dataType, mDefaultCreator);
-        }
+        if (creator == null)
+            throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
 
         SimpViewHolder simpViewHolder = creator.create(parent);
         if (simpViewHolder != null) {
-            simpViewHolder.bindOnItemClickListener(mDefaultItemClickListener, mItemClickListeners.get(dataType));
+            simpViewHolder.bindOnItemClickListener(mItemClickListeners.get(dataType));
             simpViewHolder.setOnItemChildClickListener(mOnItemClickListener);
         }
         return simpViewHolder;
     }
 
-    public <T> SimpAdapter register(int layoutRes, SimpConvert<T> simpConvert) {
+    public <T> SimpAdapter map(int layoutRes, SimpConvert<T> simpConvert) {
         Type type = getConvertActualTypeArguments(simpConvert);
-        if (type == null) {
-            throw new IllegalArgumentException();
-        }
         mCreators.put(type, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
-    public <T> SimpAdapter basic(int layoutRes, SimpConvert<T> simpConvert) {
-        mDefaultCreator = createSimpViewHolder(layoutRes, simpConvert);
+    public <T> SimpAdapter map(int layoutRes,Class<T> cla,SimpConvert<T> simpConvert) {
+        mCreators.put(cla, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
+
     public <T> SimpAdapter register(OnItemClickListener<T> onItemClickListener) {
         Type type = getConvertActualTypeArguments(onItemClickListener);
-        if (type == null)
-            throw new IllegalArgumentException();
         mItemClickListeners.put(type, onItemClickListener);
         return this;
     }
 
-    public <T> SimpAdapter basic(OnItemClickListener<T> onItemClickListener) {
-        mDefaultItemClickListener = onItemClickListener;
+    public <T> SimpAdapter register(Class<T> cla,OnItemClickListener<T> onItemClickListener) {
+        mItemClickListeners.put(cla, onItemClickListener);
         return this;
     }
+
 
     public SimpAdapter register(OnItemChildClickListener itemChildClickListener) {
         this.mOnItemClickListener = itemChildClickListener;
@@ -152,28 +143,25 @@ public class SimpAdapter extends AbsSimpAdapter {
     }
 
 
-
     private Type getConvertActualTypeArguments(Object convert) {
         if (convert == null)
             throw new IllegalArgumentException("SimpConvert not null");
-        if (convert instanceof LayoutConvert){
-            return ((LayoutConvert)convert).getTagetClass();
+        if (convert instanceof LayoutConvert) {
+            return ((LayoutConvert) convert).getTagetClass();
         }
         Type[] interfaces = convert.getClass().getGenericInterfaces();
         for (Type type : interfaces) {
-            if (type instanceof ParameterizedType) {
-                Type rawType = ((ParameterizedType) type).getRawType();
-                if (rawType.equals(SimpConvert.class) || rawType.equals(OnItemClickListener.class)) {
-                    Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
-                    if (actualType instanceof Class) {
-                        return actualType;
-                    } else {
-                        throw new IllegalArgumentException("The generic type argument of SimpConvert is NOT support Generic Parameterized Type now, Please using a WRAPPER class install of it directly.");
-                    }
-                }
-            }
+            if (!(type instanceof ParameterizedType))
+                continue;
+            Type rawType = ((ParameterizedType) type).getRawType();
+            if (!rawType.equals(SimpConvert.class) && !rawType.equals(OnItemClickListener.class))
+                continue;
+            Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
+
+            if (actualType instanceof Class)
+                return actualType;
         }
-        return null;
+        throw new IllegalArgumentException("The generic type argument of SimpConvert is NOT support Generic Parameterized Type now");
     }
 
     public SimpAdapter attachTo(RecyclerView... recyclerViews) {

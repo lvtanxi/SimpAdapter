@@ -64,17 +64,13 @@ public abstract class SimpViewHolder<D> extends RecyclerView.ViewHolder {
         convert(mViewConvert, d, position);
     }
 
-    public void bindOnItemClickListener(final OnItemClickListener<D> defaultItemClickListener, final OnItemClickListener<D> onItemClickListener) {
-        if (onItemClickListener != null || defaultItemClickListener != null) {
+    public void bindOnItemClickListener(final OnItemClickListener<D> onItemClickListener) {
+        if (onItemClickListener != null) {
             itemView.setOnClickListener(new OnNoDoubleClickListener() {
                 @Override
                 public void onNoDoubleClick(View v) {
-                    if (v.getId() == SimpViewHolder.this.itemView.getId()) {
-                        if (onItemClickListener != null)
-                            onItemClickListener.onItemClick(v, mData, getAdapterPosition());
-                        else
-                            defaultItemClickListener.onItemClick(v, mData, getAdapterPosition());
-                    }
+                    if (v.getId() == SimpViewHolder.this.itemView.getId())
+                        onItemClickListener.onItemClick(v, mData, getAdapterPosition());
                 }
             });
         }
