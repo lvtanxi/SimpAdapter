@@ -88,7 +88,7 @@ public class SimpAdapter extends AbsSimpAdapter {
         Type dataType = mDataTypes.get(viewType);
         ViewHolderCreator creator = mCreators.get(dataType);
         if (creator == null)
-            throw new IllegalArgumentException(String.format("Neither the TYPE: %s not The DEFAULT injector found...", dataType));
+            throw new IllegalArgumentException(String.format("Neither the TYPE: %s not Convert found...", dataType));
 
         SimpViewHolder simpViewHolder = creator.create(parent);
         if (simpViewHolder != null) {
@@ -98,13 +98,13 @@ public class SimpAdapter extends AbsSimpAdapter {
         return simpViewHolder;
     }
 
-    public <T> SimpAdapter map(int layoutRes, SimpConvert<T> simpConvert) {
+    public <T> SimpAdapter render(int layoutRes, SimpConvert<T> simpConvert) {
         Type type = getConvertActualTypeArguments(simpConvert);
         mCreators.put(type, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
-    public <T> SimpAdapter map(int layoutRes,Class<T> cla,SimpConvert<T> simpConvert) {
+    public <T> SimpAdapter render(int layoutRes,Class<T> cla,SimpConvert<T> simpConvert) {
         mCreators.put(cla, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
@@ -177,8 +177,8 @@ public class SimpAdapter extends AbsSimpAdapter {
         int index = mDataTypes.indexOf(item.getClass());
         if (index == -1) {
             mDataTypes.add(item.getClass());
+            index = mDataTypes.indexOf(item.getClass());
         }
-        index = mDataTypes.indexOf(item.getClass());
         return index;
     }
 

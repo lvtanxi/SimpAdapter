@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addItemDecoration(new SectionDecoration(0));
         mSimpSectionedAdapter = SimpAdapter.create(SimpSectionedAdapter.class)
-                .map(R.layout.item_setion_header, SectionData.class, (convert, sectionData, position) -> {
+                .render(R.layout.item_setion_header, SectionData.class, (convert, sectionData, position) -> {
                     System.out.println(convert);
                     convert.setText(R.id.section_title, sectionData.getTitle());
-                }).map(R.layout.item_body, new LayoutConvert(String.class))
+                }).render(R.layout.item_body, new LayoutConvert(String.class))
                 .attachTo(recyclerView).convert();
         mSimpSectionedAdapter.addItems(currentData);
     }
