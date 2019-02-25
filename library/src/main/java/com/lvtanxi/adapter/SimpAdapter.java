@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
 import com.lvtanxi.adapter.convert.LayoutConvert;
 import com.lvtanxi.adapter.convert.SimpConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+@SuppressWarnings({"ConstantConditions", "unchecked"})
 public class SimpAdapter extends AbsSimpAdapter {
 
     private List<Type> mDataTypes = new ArrayList<>();
@@ -81,7 +80,6 @@ public class SimpAdapter extends AbsSimpAdapter {
         return mDatas.size();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @NonNull
     @Override
     public SimpViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,31 +96,31 @@ public class SimpAdapter extends AbsSimpAdapter {
         return simpViewHolder;
     }
 
-    public <T> SimpAdapter render(int layoutRes, SimpConvert<T> simpConvert) {
+    public <T> SimpAdapter map(int layoutRes, SimpConvert<T> simpConvert) {
         Type type = getConvertActualTypeArguments(simpConvert);
         mCreators.put(type, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
-    public <T> SimpAdapter render(int layoutRes,Class<T> cla,SimpConvert<T> simpConvert) {
+    public <T> SimpAdapter map(int layoutRes, Class<T> cla, SimpConvert<T> simpConvert) {
         mCreators.put(cla, createSimpViewHolder(layoutRes, simpConvert));
         return this;
     }
 
 
-    public <T> SimpAdapter register(OnItemClickListener<T> onItemClickListener) {
+    public <T> SimpAdapter onItemClickListener(OnItemClickListener<T> onItemClickListener) {
         Type type = getConvertActualTypeArguments(onItemClickListener);
         mItemClickListeners.put(type, onItemClickListener);
         return this;
     }
 
-    public <T> SimpAdapter register(Class<T> cla,OnItemClickListener<T> onItemClickListener) {
+    public <T> SimpAdapter onItemClickListener(Class<T> cla, OnItemClickListener<T> onItemClickListener) {
         mItemClickListeners.put(cla, onItemClickListener);
         return this;
     }
 
 
-    public SimpAdapter register(OnItemChildClickListener itemChildClickListener) {
+    public SimpAdapter onItemChildClickListener(OnItemChildClickListener itemChildClickListener) {
         this.mOnItemClickListener = itemChildClickListener;
         return this;
     }
@@ -198,7 +196,6 @@ public class SimpAdapter extends AbsSimpAdapter {
     public <T> T convert() {
         return (T) this;
     }
-
 
     public boolean isLast(int position) {
         return (mDatas.size() - 1) == position;

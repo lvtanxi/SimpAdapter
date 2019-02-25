@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import com.lvtanxi.adapter.SimpAdapter;
 import com.lvtanxi.adapter.SimpSectionedAdapter;
 import com.lvtanxi.adapter.convert.LayoutConvert;
+import com.lvtanxi.adapter.convert.SimpConvert;
+import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.decoration.SectionDecoration;
 
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         data.add(new Music("Love story", R.drawable.icon3));
         data.add(new Music("Nothing's gonna change my love for u", R.drawable.icon4));
         data.add(new Music("Just one last dance", R.drawable.icon5));*/
-
     }
 
     @Override
@@ -70,12 +70,15 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addItemDecoration(new SectionDecoration(0));
-        mSimpSectionedAdapter = SimpAdapter.create(SimpSectionedAdapter.class)
-                .render(R.layout.item_setion_header, SectionData.class, (convert, sectionData, position) -> {
-                    System.out.println(convert);
-                    convert.setText(R.id.section_title, sectionData.getTitle());
-                }).render(R.layout.item_body, new LayoutConvert(String.class))
-                .attachTo(recyclerView).convert();
+        mSimpSectionedAdapter = new SimpSectionedAdapter()
+                .map(R.layout.item_setion_header, new SimpConvert<SectionData>() {
+                    @Override
+                    public void convert(ViewConvert convert, SectionData sectionData, int position) {
+                        System.out.println(convert);
+                        convert.setText(R.id.section_title, sectionData.getTitle());
+                    }
+                }).map(R.layout.item_body, LayoutConvert.string())
+                .attachTo(recyclerView);
         mSimpSectionedAdapter.addItems(currentData);
     }
 

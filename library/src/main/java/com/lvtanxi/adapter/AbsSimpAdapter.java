@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.lvtanxi.adapter.holder.SimpViewHolder;
 
-
+@SuppressWarnings({"unchecked"})
 abstract class AbsSimpAdapter extends RecyclerView.Adapter<SimpViewHolder> {
 
     @Override

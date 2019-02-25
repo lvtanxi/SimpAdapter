@@ -18,4 +18,13 @@ public class LayoutConvert implements SimpConvert<Object> {
     public Class<?> getTagetClass() {
         return mTagetClass;
     }
+
+    public static LayoutConvert string(){
+        return new LayoutConvert(String.class);
+    }
+
+    public static LayoutConvert bool(){
+        return new LayoutConvert(Boolean.class);
+    }
+
 }

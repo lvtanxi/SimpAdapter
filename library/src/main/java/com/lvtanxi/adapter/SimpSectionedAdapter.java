@@ -13,6 +13,7 @@ import com.lvtanxi.adapter.listener.Section;
  * Time: 13:34
  * Description: 分组adapter(设计相对简单)
  */
+@SuppressWarnings({"unchecked"})
 public class SimpSectionedAdapter extends SimpAdapter {
     //存储Sectioned对应的Position
     private final SparseIntArray mHeaderLocationMap;
@@ -76,7 +77,7 @@ public class SimpSectionedAdapter extends SimpAdapter {
         if (mSectionMap.get(itemPosition, -1) == -1 || mPositionMap.get(itemPosition, -1) == -1) {
             //枷锁计算
             synchronized (mHeaderLocationMap) {
-                Integer lastSectionIndex = -1;
+                int lastSectionIndex = -1;
                 int count = mHeaderLocationMap.size();
                 for (int i = 0; i < count; i++) {
                     //得到条目
