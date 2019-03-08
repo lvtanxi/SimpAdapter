@@ -29,6 +29,8 @@ public interface ViewConvert {
 
     ViewConvert setText(int viewId, CharSequence charSequence);
 
+    ViewConvert setText(int viewId, String text);
+
     ViewConvert setTypeface(int viewId, Typeface typeface, int style);
 
     ViewConvert setTypeface(int viewId, Typeface typeface);
@@ -70,7 +72,6 @@ public interface ViewConvert {
     ViewConvert setOnItemChildClickListener(int ...viewIds);
 
     ViewConvert setEnabled(int viewId, boolean enable);
-
 
     ViewConvert enable(int viewId);
 

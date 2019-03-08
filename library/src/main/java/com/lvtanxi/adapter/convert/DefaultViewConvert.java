@@ -62,6 +62,16 @@ public class DefaultViewConvert implements ViewConvert {
     }
 
     @Override
+    public ViewConvert setText(int viewId, String text) {
+        if (text != null && text.contains("null")) {
+            text = text.replaceAll("null", "");
+        }
+        TextView view = getView(viewId);
+        view.setText(text);
+        return this;
+    }
+
+    @Override
     public DefaultViewConvert setTypeface(int viewId, Typeface typeface, int style) {
         TextView view = getView(viewId);
         view.setTypeface(typeface, style);
@@ -285,7 +295,7 @@ public class DefaultViewConvert implements ViewConvert {
      * 为id为viewId的item子控件设置点击事件监听器
      */
     @Override
-    public DefaultViewConvert setOnItemChildClickListener( int ...viewIds) {
+    public DefaultViewConvert setOnItemChildClickListener(int... viewIds) {
         for (int viewId : viewIds) {
             View view = getView(viewId);
             if (view != null) {

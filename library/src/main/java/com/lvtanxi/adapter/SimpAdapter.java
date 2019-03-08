@@ -31,7 +31,7 @@ public class SimpAdapter extends AbsSimpAdapter {
 
     protected List<Object> mDatas;
 
-    protected SimpAdapter() {
+    public SimpAdapter() {
         mDatas = new ArrayList<>();
     }
 
