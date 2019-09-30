@@ -2,12 +2,14 @@ package com.lvtanxi.adapter.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.Region;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+@SuppressWarnings({"unchecked"})
+@Deprecated
 public class SectionDecoration extends RecyclerView.ItemDecoration {
 
     private int mHeaderPosition;
@@ -33,14 +35,14 @@ public class SectionDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         createPinnedHeader(parent);
 
         if (mPinnedHeaderView != null) {
             int headerEndAt = mPinnedHeaderView.getTop() + mPinnedHeaderView.getHeight();
-            View v = parent.findChildViewUnder(c.getWidth() / 2, headerEndAt + 1);
+            View v = parent.findChildViewUnder(c.getWidth() >> 1, headerEndAt + 1);
 
-            if (isPinnedView(parent, v)) {
+            if (v != null && isPinnedView(parent, v)) {
                 mPinnedHeaderTop = v.getTop() - mPinnedHeaderView.getHeight();
             } else {
                 mPinnedHeaderTop = 0;
@@ -53,12 +55,12 @@ public class SectionDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         if (mPinnedHeaderView != null) {
             c.save();
 
             mClipBounds.top = 0;
-            c.clipRect(mClipBounds, Region.Op.UNION);
+            c.clipRect(mClipBounds);
             c.translate(0, mPinnedHeaderTop);
             mPinnedHeaderView.draw(c);
 
@@ -127,7 +129,7 @@ public class SectionDecoration extends RecyclerView.ItemDecoration {
     }
 
     private boolean isPinnedViewType(RecyclerView parent, int adapterPosition, int viewType) {
-        PinnedHeaderCreator pinnedHeaderCreator =  mTypePinnedHeaderFactories.get(viewType);
+        PinnedHeaderCreator pinnedHeaderCreator = mTypePinnedHeaderFactories.get(viewType);
 
         return pinnedHeaderCreator != null && pinnedHeaderCreator.create(parent, adapterPosition);
     }

@@ -2,13 +2,13 @@ package com.lvtanxi.adapter.convert;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Date: 2017-12-29

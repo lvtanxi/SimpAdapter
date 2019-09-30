@@ -3,7 +3,6 @@ package com.lvtanxi.adapter.convert;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,11 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.holder.SimpViewHolder;
 import com.lvtanxi.adapter.listener.OnNoDoubleClickListener;
 
-
+@SuppressWarnings({"unchecked"})
 public class DefaultViewConvert implements ViewConvert {
 
     private SimpViewHolder viewHolder;
@@ -191,7 +191,7 @@ public class DefaultViewConvert implements ViewConvert {
     @Override
     public ViewConvert setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener) {
         View view = getView(viewId);
-        if (view != null && view instanceof CompoundButton) {
+        if (view instanceof CompoundButton) {
             ((CompoundButton) view).setOnCheckedChangeListener(listener);
         }
         return this;

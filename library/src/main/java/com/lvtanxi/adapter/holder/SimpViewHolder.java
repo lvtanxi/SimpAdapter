@@ -1,11 +1,11 @@
 package com.lvtanxi.adapter.holder;
 
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.convert.DefaultViewConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;
 import com.lvtanxi.adapter.listener.OnItemChildClickListener;
@@ -79,7 +79,7 @@ public abstract class SimpViewHolder<D> extends RecyclerView.ViewHolder {
 
     protected abstract void convert(ViewConvert convert, D d, int position);
 
-
+    @SuppressWarnings({"unchecked"})
     public final <T extends View> T getView(int id) {
         View view = mViewSparseArray.get(id);
         if (view == null) {

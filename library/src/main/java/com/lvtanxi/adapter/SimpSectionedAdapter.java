@@ -1,9 +1,10 @@
 package com.lvtanxi.adapter;
 
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.listener.OnSectionedListener;
 import com.lvtanxi.adapter.listener.Section;
 
@@ -112,7 +113,7 @@ public class SimpSectionedAdapter extends SimpAdapter {
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         if(!mOpenSctionChange)
             return;

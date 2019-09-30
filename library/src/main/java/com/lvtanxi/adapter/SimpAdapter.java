@@ -1,9 +1,9 @@
 package com.lvtanxi.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.collection.ArrayMap;
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.convert.LayoutConvert;
 import com.lvtanxi.adapter.convert.SimpConvert;
 import com.lvtanxi.adapter.convert.ViewConvert;

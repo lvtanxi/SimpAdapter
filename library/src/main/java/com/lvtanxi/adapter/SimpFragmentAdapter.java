@@ -1,10 +1,12 @@
 package com.lvtanxi.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.List;
+
 
 /**
  * Date: 2016-05-05
@@ -16,14 +18,14 @@ public class SimpFragmentAdapter extends FragmentStatePagerAdapter {
     private CharSequence[] mTitles;
 
     public SimpFragmentAdapter(FragmentManager fm, List<Fragment> fragments, CharSequence[] titles) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mFragments = fragments;
         mTitles = titles;
     }
 
 
     public SimpFragmentAdapter(FragmentManager fm, List<Fragment> fragments) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mFragments = fragments;
     }
 

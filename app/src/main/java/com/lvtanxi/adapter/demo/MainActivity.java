@@ -1,9 +1,9 @@
 package com.lvtanxi.adapter.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.SimpAdapter;
 import com.lvtanxi.adapter.SimpSectionedAdapter;
 import com.lvtanxi.adapter.convert.LayoutConvert;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 .map(R.layout.item_setion_header, new SimpConvert<SectionData>() {
                     @Override
                     public void convert(ViewConvert convert, SectionData sectionData, int position) {
-                        System.out.println(convert);
+                        System.out.println(sectionData.getTitle());
                         convert.setText(R.id.section_title, sectionData.getTitle());
                     }
                 }).map(R.layout.item_body, LayoutConvert.string())

@@ -1,7 +1,7 @@
 package com.lvtanxi.adapter;
 
-import android.support.v7.widget.RecyclerView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import com.lvtanxi.adapter.holder.SimpViewHolder;
 
 @SuppressWarnings({"unchecked"})
