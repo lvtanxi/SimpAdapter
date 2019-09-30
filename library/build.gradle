@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.MIN_SDK_VERSION
         targetSdkVersion rootProject.TARGET_SDK_VERSION
-        versionCode 3
-        versionName "1.1.0-androidx"
+        versionCode 4
+        versionName "1.1.1-androidx"
 
     }
 
